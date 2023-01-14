@@ -41,7 +41,8 @@ class UserDetailView(LoginRequiredMixin, DetailView, MultipleObjectMixin):
 
     def get_context_data(self, **kwargs):
         products = self.get_object().products.all()
-        return super().get_context_data(object_list=products, **kwargs)
+        reviews = self.get_object().reviews.all()
+        return super().get_context_data(object_list=products, reviews=reviews, **kwargs)
 
 class UsersListView(PermissionRequiredMixin, ListView):
     model = get_user_model()

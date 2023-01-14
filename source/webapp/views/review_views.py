@@ -16,18 +16,12 @@ class ReviewView(DetailView):
     context_object_name = 'review'
 
 
-class ReviewCreate(PermissionRequiredMixin, CreateView):
+class ReviewCreate(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review/review_form.html'
     success_url = 'review_view'
     context_object_name = 'reviews'
-    permission_required = 'webapp.add_review'
-
-    def has_permission(self):
-        return True
-        project =get_object_or_404(Product, pk=self.kwargs['pk'])
-        return super().has_permission() and self.request.user in project.users.all()
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -46,6 +40,9 @@ class ReviewUpdate(PermissionRequiredMixin, UpdateView):
     context_object_name = 'form'
     permission_required = 'webapp:change_review'
 
+    def has_permission(self):
+        return super().has_permission() and self.request.user in self.get_object().review.users.all()
+
     def get_success_url(self):
         return reverse(self.success_url, kwargs={'pk': self.object.pk})
 
@@ -54,6 +51,10 @@ class ReviewDelete(DeleteView):
     template_name = 'review/review_confirm_delete.html'
     success_url = reverse_lazy('review_index')
     context_object_name = 'review'
+    permission_required = 'webapp:change_review'
+
+    def has_permission(self):
+        return super().has_permission() and self.request.user in self.get_object().review.users.all()
 
     def get_success_url(self):
         return reverse('review_index')

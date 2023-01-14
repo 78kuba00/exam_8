@@ -1,0 +1,24 @@
+<h1>Reviews</h1>
+<div class="row">
+    {% for review in reviews %}
+        <div class="col col-lg-4 my-2">
+            <div class="card">
+                <h5 class="card-header"> Рецензия: <a
+                        href="{% url 'accounts:detail' review.author.pk %}">{{ review.author }}</a>
+                </h5>
+
+                <div class="card-body">
+
+                        <p>{{ review.review_text }}</p>
+                        <a href="{% url 'webapp:review_view' review.pk %}">View</a>
+                        <a href="{% url 'webapp:review_update' review.pk %}">Edit</a>
+                        <a href="{% url 'webapp:review_delete' review.pk %}">Delete</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+    {% include 'partial/pagination.html' %}
+{% endif %}

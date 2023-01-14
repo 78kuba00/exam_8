@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 {% block title %}Product View{% endblock %}
 
 {% block nav %}
@@ -12,8 +11,14 @@
     <div class="container">
         <div class="card mt-3">
             <div class="card-header">
-                <h1 class="text-center">{{ product.name }}</h1>
-                <p>Product rating: {% for i in product.rating %}<i class="fas fa-star"></i>{% endfor %}</p>
+            <h1 class="text-center">{{ product.name }}</h1>
+            <div class="rating">
+{#              {% for i in range(5) %}#}
+{#                <span class="fa fa-star  {% if i < product.get_rating %}checked{% endif %}"></span>#}
+{#              {% endfor %}#}
+            </div>
+
+            <p>Product rating: {% for i in get %}<i class="fas fa-star"></i>{% endfor %}</p>
             </div>
             <div class="card-body">
                 <p class="card-text">Category: {{ product.category }}</p>
@@ -39,7 +44,8 @@
             <ul class="list-group">
                 {% for review in reviews %}
                     <li class="list-group-item">
-                        <p><strong>Author:</strong> {{ review.author }}
+
+                        <p><strong>Author:</strong> <a href="{% url 'accounts:detail' review.author.pk %}">{{ review.author }}</a>
                         <p><strong>Product:</strong> {{ review.product }}</p>
                         <p><strong>Review text:</strong> {{ review.review_text }}</p>
                         <p><strong>Rating:</strong> {{ review.rating }}</p>

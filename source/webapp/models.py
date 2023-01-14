@@ -12,6 +12,10 @@ class Product(models.Model):
     image = models.ImageField(blank=True, verbose_name='Картинка')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='products')
 
+    def get_rating(self):
+
+        return 4.5
+
 
     def __str__(self):
         return f'{self.pk}. {self.name}'

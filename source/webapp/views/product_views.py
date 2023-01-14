@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from webapp.models import Product, Review
 from webapp.forms import ProductForm
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 class ProductList(ListView):
@@ -35,12 +36,18 @@ class ProductView(DetailView):
         return context
 
 
-class ProductCreate(CreateView):
+class ProductCreate(PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'product/product_form.html'
     success_url = 'product_view'
     context_object_name = 'form'
+    permission_required = "webapp.add_product"
+
+    def has_permission(self):
+        product = get_object_or_404(Product, pk=self.kwargs.get('pk'))
+        # return super().has_permission() or self.get_object().users == self.request.user
+        return super().has_permission() and self.request.user in product.users.all()
 
     def get_success_url(self):
         return reverse('webapp:product_view', kwargs={'pk': self.object.pk})
@@ -51,15 +58,25 @@ class ProductUpdate(UpdateView):
     template_name = 'product/product_update.html'
     success_url = 'product_view'
     context_object_name = 'form'
+    permission_required = 'webapp.change_product'
+
+    def has_permission(self):
+        product = get_object_or_404(Product, pk=self.kwargs.get('pk'))
+        # return super().has_permission() or self.get_object().users == self.request.user
+        return super().has_permission() and self.request.user in product.users.all()
 
     def get_success_url(self):
         return reverse('webapp:product_view', kwargs={'pk': self.object.pk})
 
-class ProductDelete(DeleteView):
+class ProductDelete(PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'product/product_confirm_delete.html'
     success_url = reverse_lazy('index')
     context_object_name = 'product'
+    permission_required = 'webapp.delete_product'
 
+    def has_permission(self):
+        product = get_object_or_404(Product, pk=self.kwargs.get('pk'))
+        return super().has_permission() and self.request.user in product.users.all()
     def get_success_url(self):
         return reverse('webapp:index')
