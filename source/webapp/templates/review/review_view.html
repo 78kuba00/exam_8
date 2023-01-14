@@ -6,5 +6,8 @@
     <p><strong>Product:</strong> {{ review.product }}</p>
     <p><strong>Review text:</strong> {{ review.review_text }}</p>
     <p><strong>Rating:</strong> {{ review.rating }}</p>
-    <p><a href="{% url 'review_index' %}">Back to reviews list</a></p>
+    <div>
+    <p>Review rating: {% for i in review.rating %}<i class="fas fa-star"></i>{% endfor %}</p>
+    </div>
+    <p><a href="{% url 'webapp:review_index' %}">Back to reviews list</a></p>
 {% endblock %}

@@ -1,67 +1,10 @@
-{#{% extends 'base.html' %}#}
-{##}
-{#{% block title %}Product View{% endblock %}#}
-{#{% block nav %}#}
-{#    {%  if request.user.is_authenticated %}#}
-{#        {% if perms.webapp.create_project %}#}
-{#            <li class="nav-item">#}
-{#                <a class="nav-link" href="{% url 'product_create' %}">Create Product ( + )</a>#}
-{#            </li>#}
-{#        {% endif %}#}
-{#        {% if perms.webapp.can_add_users_to_the_project and request.user in project.users.all %}#}
-{#            <li class="nav-item">#}
-{#                <a class="nav-link" href="{% url 'webapp:change_users' project.pk %}">Manage Users ( + )</a>#}
-{#            </li>#}
-{#        {% endif %}#}
-{#        {% if perms.webapp.add_tracker and request.user in project.users.all %}#}
-{#            <li class="nav-item">#}
-{#                <a class="nav-link" href="{% url 'task_add' project.pk %}">Create Task ( + )</a>#}
-{#            </li>#}
-{#        {% endif %}#}
-{#    {% endif %}#}
-{#{% endblock %}#}
-{#{% block content %}#}
-{#    <div class="card text-center">#}
-{#        <h1>{{ product.name }}</h1>#}
-{#        <p>Category: {{ product.category }}</p>#}
-{#        <p>{{ product.description|default:'No description provided.' }}</p>#}
-{#        {% if product.image %}#}
-{#            <img src="{{ product.image.url }}" alt="{{ product.name }}">#}
-{#        {% else %}#}
-{#            <img src="{{ product_image.url }}" alt="Placeholder image">#}
-{#        {% endif %}#}
-{#        <br>#}
-{#        <a href="{% url 'product_update' product.pk %}">Edit</a>#}
-{#        <a href="{% url 'product_delete' product.pk %}">Delete</a>#}
-{#        <a href="{% url 'index' %}">Back to product list</a>#}
-{#    </div>#}
-{##}
-{#    <h3>Reviews: </h3>#}
-{#    {% if is_paginated %}#}
-{#        {% include 'partial/pagination.html' %}#}
-{#    {% endif %}#}
-{#    <div class="row">#}
-{#    <ul>#}
-{#        {% for review in reviews %}#}
-{#          <li>#}
-{#            <p><strong>Author:</strong> {{ review.author }}</p>#}
-{#            <p><strong>Product:</strong> {{ review.product }}</p>#}
-{#            <p><strong>Review text:</strong> {{ review.review_text }}</p>#}
-{#            <p><strong>Rating:</strong> {{ review.rating }}</p>#}
-{#          </li>#}
-{#        {% endfor %}#}
-{#    </ul>#}
-{#    <a href="{% url 'review_create' %}">Add a review</a>#}
-{##}
-{#{% endblock %}#}
-
 {% extends 'base.html' %}
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 {% block title %}Product View{% endblock %}
 
 {% block nav %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'product_create' %}">Create Product ( + )</a>
+        <a class="nav-link" href="{% url 'webapp:product_create' %}">Create Product ( + )</a>
     </li>
 {% endblock %}
 
@@ -70,6 +13,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <h1 class="text-center">{{ product.name }}</h1>
+                <p>Product rating: {% for i in product.rating %}<i class="fas fa-star"></i>{% endfor %}</p>
             </div>
             <div class="card-body">
                 <p class="card-text">Category: {{ product.category }}</p>
@@ -80,16 +24,16 @@
                     <img class="img-thumbnail" src="{{ product_image.url }}" alt="Placeholder image">
                 {% endif %}
                 <div class="text-right mt-3">
-                    <a class="btn btn-primary" href="{% url 'product_update' product.pk %}">Edit</a>
-                    <a class="btn btn-danger" href="{% url 'product_delete' product.pk %}">Delete</a>
-                    <a class="btn btn-secondary" href="{% url 'index' %}">Back to product list</a>
+                    <a class="btn btn-primary" href="{% url 'webapp:product_update' product.pk %}">Edit</a>
+                    <a class="btn btn-danger" href="{% url 'webapp:product_delete' product.pk %}">Delete</a>
+                    <a class="btn btn-secondary" href="{% url 'webapp:index' %}">Back to product list</a>
                 </div>
             </div>
         </div>
 
         <h3 class="mt-5">Reviews: </h3>
         {% if is_paginated %}
-            {% include 'partial/pagination.html' %}
+            {% include 'webapp:partial/pagination.html' %}
         {% endif %}
         <div class="row">
             <ul class="list-group">
@@ -102,5 +46,5 @@
                       </li>
                     {% endfor %}
                 </ul>
-                <a href="{% url 'review_create' %}">Add a review</a>
+                <a href="{% url 'webapp:review_create' product.pk %}">Add a review</a>
 {% endblock %}

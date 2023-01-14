@@ -22,13 +22,13 @@
                 <td>{{ review.review_text }}</td>
                 <td>{{ review.rating }}</td>
                 <td>
-                    <a href="{% url 'review_view' review.pk %}">View</a>
-                    <a href="{% url 'review_update' review.pk %}">Update</a>
-                    <a href="{% url 'review_delete' review.pk %}">Delete</a>
+                    <a href="{% url 'webapp:review_view' review.pk %}">View</a>
+                    <a href="{% url 'webapp:review_update' review.pk %}">Update</a>
+                    <a href="{% url 'webapp:review_delete' review.pk %}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'review_create' %}">Create new review</a>
+    <a href="{% url 'webapp:review_create' %}">Create new review</a>
 {% endblock %}
