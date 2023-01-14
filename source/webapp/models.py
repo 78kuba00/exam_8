@@ -1,6 +1,5 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from datetime import datetime
 from django.contrib.auth import get_user_model
 
 CATEGORIES_CHOICES = [("other", "Разное"), ("electronics", "Электроника"), ("books", "Книги"),

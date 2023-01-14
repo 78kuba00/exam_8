@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="POST">
+    {% csrf_token %}
+        <h4>Вы действительно хотите удалить задачу "{{ product.name }}"?</h4>
+        <input type="submit" class="btn btn-danger" value="Да">
+        <a href="{% url 'index' product.pk %}" class="btn btn-success">Нет</a>
+    </form>
+{% endblock %}

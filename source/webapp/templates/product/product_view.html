@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Product View{% endblock %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+    <p>Category: {{ product.category }}</p>
+    <p>{{ product.description|default:'No description provided.' }}</p>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% else %}
+        <img src="{{ product_image.url }}" alt="Placeholder image">
+    {% endif %}
+    <br>
+    <a href="{% url 'index' %}">Back to product list</a>
+{% endblock %}
