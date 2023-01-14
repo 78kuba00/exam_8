@@ -9,8 +9,14 @@
 
                 <div class="card-body">
                         <a href="{% url 'webapp:product_view' product.pk %}">View</a>
-                        <a href="{% url 'webapp:product_update' product.pk %}">Edit</a>
-                        <a href="{% url 'webapp:product_delete' product.pk %}">Delete</a>
+                        {%  if request.user.is_authenticated %}
+                            {% if perms.webapp.change_product %}
+                                <a href="{% url 'webapp:product_update' product.pk %}">Edit</a>
+                            {% endif %}
+                            {% if perms.webapp.delete_product %}
+                                <a href="{% url 'webapp:product_delete' product.pk %}">Delete</a>
+                            {% endif %}
+                        {% endif %}
 {#                    <p class="card-text">Пользователь(ли): {% for users in project.users.all %}{{ users.username }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>#}
 {#                    <h5 class="card-title">Дата начала:{{ project.start_at }} </h5>#}
 {#                    <p class="card-text">Дата окончания: {{ project.end_at|default:"-" }} </p>#}

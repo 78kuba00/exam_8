@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block nav %}
-    <li class="nav-item">
-        <a href="{% url 'webapp:product_create' %}">Create Product (+)</a>
-    </li>
+    {%  if request.user.is_authenticated %}
+        {% if perms.webapp.add_product %}
+            <li class="nav-item">
+                <a href="{% url 'webapp:product_create' %}">Create Product (+)</a>
+            </li>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}

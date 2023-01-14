@@ -11,8 +11,13 @@
 
                         <p>{{ review.review_text }}</p>
                         <a href="{% url 'webapp:review_view' review.pk %}">View</a>
-                        <a href="{% url 'webapp:review_update' review.pk %}">Edit</a>
-                        <a href="{% url 'webapp:review_delete' review.pk %}">Delete</a>
+                        {%  if request.user.is_authenticated %}
+                            {% if perms.webapp.change_review %}
+                                <a href="{% url 'webapp:review_update' review.pk %}">Edit</a>
+                            {% endif %}
+                            {% if perms.webapp.delete_review %}
+                                <a href="{% url 'webapp:review_delete' review.pk %}">Delete</a>
+                            {% endif %}
                 </div>
             </div>
         </div>

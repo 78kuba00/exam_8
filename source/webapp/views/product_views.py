@@ -25,7 +25,7 @@ class ProductView(DetailView):
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
-        reviews = self.object.reviews.all()
+        reviews = self.object.reviews.filter(is_reviewed=True)
         paginator = Paginator(reviews, 10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -45,9 +45,7 @@ class ProductCreate(PermissionRequiredMixin, CreateView):
     permission_required = "webapp.add_product"
 
     def has_permission(self):
-        product = get_object_or_404(Product, pk=self.kwargs.get('pk'))
-        # return super().has_permission() or self.get_object().users == self.request.user
-        return super().has_permission() and self.request.user in product.users.all()
+        return self.request.user.has_perm('webapp:add_product')
 
     def get_success_url(self):
         return reverse('webapp:product_view', kwargs={'pk': self.object.pk})
