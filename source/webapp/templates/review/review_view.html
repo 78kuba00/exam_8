@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Review #{{ review.pk }}</h1>
+    <p><strong>Author:</strong> {{ review.author }}</p>
+    <p><strong>Product:</strong> {{ review.product }}</p>
+    <p><strong>Review text:</strong> {{ review.review_text }}</p>
+    <p><strong>Rating:</strong> {{ review.rating }}</p>
+    <p><a href="{% url 'review_index' %}">Back to reviews list</a></p>
+{% endblock %}
